@@ -74,6 +74,7 @@ go test ./...
 - [Mobile integration](docs/MOBILE.md)
 - [CLI](docs/CLI.md)
 - [Real DNS testing](docs/REAL_DNS.md)
+- [Resolver strategy](docs/RESOLVERS.md)
 - [Android smoke test](docs/ANDROID.md)
 - [iOS smoke test](docs/IOS.md)
 - [TLS and certificate pinning](docs/TLS.md)

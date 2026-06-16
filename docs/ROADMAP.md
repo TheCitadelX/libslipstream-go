@@ -31,6 +31,7 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 - [x] CLI tools for client/server VPS testing.
 - [x] Self-signed certificate helper for CLI smoke tests.
 - [x] Real DNS testing documentation.
+- [x] Resolver failover, retry, and backoff behavior.
 
 ## Next
 
@@ -38,7 +39,6 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 
 ## Later
 
-- [ ] Tune resolver failover, retry, and backoff behavior.
 - [ ] Add tagged release workflow.
 - [ ] Compare protocol behavior against `Mygod/slipstream-rust` on real DNS
       resolvers.

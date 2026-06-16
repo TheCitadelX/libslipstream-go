@@ -12,11 +12,13 @@ import (
 )
 
 const (
-	defaultPacketQueueSize = 2048
-	defaultUDPReadBuffer   = 4 * 1024 * 1024
-	defaultPollInterval    = 25 * time.Millisecond
-	defaultIdleThreshold   = 100 * time.Millisecond
-	pollFrame              = 0x20
+	defaultPacketQueueSize    = 2048
+	defaultUDPReadBuffer      = 4 * 1024 * 1024
+	defaultPollInterval       = 25 * time.Millisecond
+	defaultIdleThreshold      = 100 * time.Millisecond
+	defaultResolverBackoff    = 250 * time.Millisecond
+	defaultResolverMaxBackoff = 5 * time.Second
+	pollFrame                 = 0x20
 )
 
 type DNSPacketConnConfig struct {
@@ -29,21 +31,20 @@ type DNSPacketConnConfig struct {
 }
 
 type DNSPacketConn struct {
-	conn      *net.UDPConn
-	resolvers []*net.UDPAddr
-	domain    string
-	localAddr net.Addr
+	conn         *net.UDPConn
+	resolverPool *resolverPool
+	domain       string
+	localAddr    net.Addr
 
 	rxQueue chan []byte
 	done    chan struct{}
 	closed  atomic.Bool
 	once    sync.Once
 
-	nextID       atomic.Uint32
-	nextResolver atomic.Uint64
-	lastWrite    atomic.Int64
-	fragments    fragmenter
-	reassembler  *reassembler
+	nextID      atomic.Uint32
+	lastWrite   atomic.Int64
+	fragments   fragmenter
+	reassembler *reassembler
 
 	mu            sync.Mutex
 	readDeadline  time.Time
@@ -87,13 +88,13 @@ func NewDNSPacketConn(config DNSPacketConnConfig) (*DNSPacketConn, error) {
 	}
 
 	c := &DNSPacketConn{
-		conn:        udp,
-		resolvers:   resolvers,
-		domain:      domain,
-		localAddr:   &net.UDPAddr{IP: net.ParseIP("127.0.0.1"), Port: 0},
-		rxQueue:     make(chan []byte, queueSize),
-		done:        make(chan struct{}),
-		reassembler: newReassembler(),
+		conn:         udp,
+		resolverPool: newResolverPool(resolvers, defaultResolverBackoff, defaultResolverMaxBackoff),
+		domain:       domain,
+		localAddr:    &net.UDPAddr{IP: net.ParseIP("127.0.0.1"), Port: 0},
+		rxQueue:      make(chan []byte, queueSize),
+		done:         make(chan struct{}),
+		reassembler:  newReassembler(),
 	}
 	c.pollInterval = config.PollInterval
 	if c.pollInterval <= 0 {
@@ -169,12 +170,14 @@ func (c *DNSPacketConn) WriteTo(p []byte, _ net.Addr) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	resolver := c.nextResolverAddr()
 	for _, fragment := range fragments {
 		packet, _, err := sdns.EncodePayloadQuery(c.nextQueryID(), fragment, c.domain)
 		if err != nil {
 			return 0, err
 		}
-		if _, err := c.conn.WriteToUDP(packet, c.nextResolverAddr()); err != nil {
+		if _, err := c.conn.WriteToUDP(packet, resolver); err != nil {
+			c.resolverPool.reportFailure(resolver, time.Now())
 			return 0, err
 		}
 	}
@@ -223,7 +226,7 @@ func (c *DNSPacketConn) SetWriteDeadline(t time.Time) error {
 func (c *DNSPacketConn) readLoop() {
 	buf := make([]byte, 4096)
 	for {
-		n, _, err := c.conn.ReadFromUDP(buf)
+		n, resolver, err := c.conn.ReadFromUDP(buf)
 		if err != nil {
 			select {
 			case <-c.done:
@@ -232,6 +235,7 @@ func (c *DNSPacketConn) readLoop() {
 				continue
 			}
 		}
+		c.resolverPool.reportSuccess(resolver)
 		payload := sdns.DecodeResponse(buf[:n])
 		if len(payload) == 0 {
 			continue
@@ -269,7 +273,11 @@ func (c *DNSPacketConn) sendPoll() error {
 	if err != nil {
 		return err
 	}
-	_, err = c.conn.WriteToUDP(packet, c.nextResolverAddr())
+	resolver := c.nextResolverAddr()
+	_, err = c.conn.WriteToUDP(packet, resolver)
+	if err != nil {
+		c.resolverPool.reportFailure(resolver, time.Now())
+	}
 	return err
 }
 
@@ -278,8 +286,7 @@ func (c *DNSPacketConn) nextQueryID() uint16 {
 }
 
 func (c *DNSPacketConn) nextResolverAddr() *net.UDPAddr {
-	next := c.nextResolver.Add(1) - 1
-	return c.resolvers[int(next%uint64(len(c.resolvers)))]
+	return c.resolverPool.next(time.Now())
 }
 
 func (c *DNSPacketConn) getReadDeadline() time.Time {
