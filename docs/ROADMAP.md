@@ -26,6 +26,8 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 - [x] iOS smoke test instructions.
 - [x] Production TLS and certificate pinning documentation.
 - [x] CI for Go tests.
+- [x] Transport benchmarks for DNS fragmentation overhead.
+- [x] CI workflow for Android mobile binding compilation.
 
 ## Next
 
@@ -33,9 +35,7 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 
 ## Later
 
-- [ ] Add transport benchmarks for DNS fragmentation overhead.
 - [ ] Tune resolver failover, retry, and backoff behavior.
-- [ ] Add CI for mobile binding compilation.
 - [ ] Add tagged release workflow.
 - [ ] Compare protocol behavior against `Mygod/slipstream-rust` on real DNS
       resolvers.

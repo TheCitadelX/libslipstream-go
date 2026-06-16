@@ -22,3 +22,45 @@ jobs:
 
       - name: Test
         run: go test ./...
+
+  android-bind:
+    name: Android gomobile bind
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Android SDK packages
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-36" \
+            "build-tools;36.0.0" \
+            "ndk;27.0.12077973"
+
+      - name: Install gomobile
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          go install golang.org/x/mobile/cmd/gobind@latest
+          gomobile init
+
+      - name: Build Android AAR
+        env:
+          OUTPUT: build/android/libslipstream-ci.aar
+          TARGET: android/amd64
+          ANDROIDAPI: "21"
+        run: |
+          export ANDROID_NDK_HOME="$ANDROID_HOME/ndk/27.0.12077973"
+          ./scripts/build-android.sh

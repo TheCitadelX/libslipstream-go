@@ -74,6 +74,7 @@ go test ./...
 - [Android smoke test](docs/ANDROID.md)
 - [iOS smoke test](docs/IOS.md)
 - [TLS and certificate pinning](docs/TLS.md)
+- [Benchmarks](docs/BENCHMARKS.md)
 - [Roadmap](docs/ROADMAP.md)
 
 ## Examples
