@@ -28,6 +28,9 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 - [x] CI for Go tests.
 - [x] Transport benchmarks for DNS fragmentation overhead.
 - [x] CI workflow for Android mobile binding compilation.
+- [x] CLI tools for client/server VPS testing.
+- [x] Self-signed certificate helper for CLI smoke tests.
+- [x] Real DNS testing documentation.
 
 ## Next
 

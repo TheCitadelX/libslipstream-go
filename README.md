@@ -25,6 +25,7 @@ with `gomobile bind` for Android and iOS.
   core API in gomobile-friendly types.
 - Mobile clients and servers expose a small event queue for app-friendly
   runtime status and error reporting.
+- CLI tools are available for VPS/local DNS tunnel testing.
 
 The client runtime now follows a hybrid strategy: keep Rust wire compatibility as
 the source of truth, while borrowing practical transport ideas from
@@ -71,6 +72,8 @@ go test ./...
 ## Docs
 
 - [Mobile integration](docs/MOBILE.md)
+- [CLI](docs/CLI.md)
+- [Real DNS testing](docs/REAL_DNS.md)
 - [Android smoke test](docs/ANDROID.md)
 - [iOS smoke test](docs/IOS.md)
 - [TLS and certificate pinning](docs/TLS.md)
