@@ -2,7 +2,10 @@
 .vscode/
 bin/
 build/
+.gradle-local/
+.gradle/
 tmp/
 *.exe
 *.test
 *.out
+examples/android-smoke/app/libs/*.aar

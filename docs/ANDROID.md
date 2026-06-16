@@ -30,6 +30,19 @@ Inspect the generated classes:
 .\scripts\inspect-android-aar.ps1 -AAR build\android\libslipstream-amd64.aar
 ```
 
+Build and run the smoke APK on the default local AVD:
+
+```powershell
+.\scripts\build-android-smoke.ps1
+.\scripts\run-android-smoke.ps1 -AvdName 'Medium_Phone_API_36.1'
+```
+
+The runtime smoke test passes when logcat contains:
+
+```text
+SLIPSTREAM_SMOKE_OK connected=false
+```
+
 ## Import
 
 1. Add the AAR to your Android app project.
