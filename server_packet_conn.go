@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	sdns "slipstream-go/pkg/dns"
+	sdns "github.com/TheCitadelX/libslipstream-go/pkg/dns"
 )
 
 const (

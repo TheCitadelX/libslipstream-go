@@ -1,6 +1,6 @@
 package mobile
 
-import core "slipstream-go"
+import core "github.com/TheCitadelX/libslipstream-go"
 
 type Server struct {
 	inner *core.Server

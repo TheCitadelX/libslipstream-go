@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	core "slipstream-go"
+	core "github.com/TheCitadelX/libslipstream-go"
 )
 
 type ClientConfig struct {

@@ -13,25 +13,27 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 - [x] Per-stream target routing.
 - [x] Local SOCKS5 proxy for client apps.
 - [x] Certificate pinning helpers.
-- [x] `slipstream-go/mobile` wrapper package for gomobile-friendly APIs.
+- [x] `github.com/TheCitadelX/libslipstream-go/mobile` wrapper package for
+      gomobile-friendly APIs.
 - [x] Mobile-layer tests for direct TCP streams and SOCKS5 proxying.
+- [x] `gomobile bind` build scripts for Android.
+- [x] `gomobile bind` build scripts for iOS.
+- [x] Android smoke test instructions.
+- [x] iOS smoke test instructions.
+- [x] Production TLS and certificate pinning documentation.
+- [x] CI for Go tests.
 
 ## Next
 
-- [ ] Add `gomobile bind` build scripts for Android.
-- [ ] Add `gomobile bind` build scripts for iOS.
-- [ ] Add Android smoke test instructions.
-- [ ] Add iOS smoke test instructions.
 - [ ] Add a minimal Android integration example.
 - [ ] Add a minimal iOS integration example.
-- [ ] Document production TLS and certificate pinning setup.
 - [ ] Add runtime logging hooks suitable for mobile apps.
 
 ## Later
 
 - [ ] Add transport benchmarks for DNS fragmentation overhead.
 - [ ] Tune resolver failover, retry, and backoff behavior.
-- [ ] Add CI for tests and mobile binding compilation.
+- [ ] Add CI for mobile binding compilation.
 - [ ] Add tagged release workflow.
 - [ ] Compare protocol behavior against `Mygod/slipstream-rust` on real DNS
       resolvers.

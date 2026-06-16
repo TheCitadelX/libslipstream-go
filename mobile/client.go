@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	core "slipstream-go"
+	core "github.com/TheCitadelX/libslipstream-go"
 )
 
 type Client struct {

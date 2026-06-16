@@ -12,7 +12,7 @@ import (
 
 	"github.com/quic-go/quic-go"
 
-	sdns "slipstream-go/pkg/dns"
+	sdns "github.com/TheCitadelX/libslipstream-go/pkg/dns"
 )
 
 type ClientConfig struct {

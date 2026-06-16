@@ -1,4 +1,4 @@
-module slipstream-go
+module github.com/TheCitadelX/libslipstream-go
 
 go 1.24
 

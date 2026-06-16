@@ -1,4 +1,4 @@
-# slipstream-go
+# libslipstream-go
 
 Go port of the Slipstream DNS tunnel protocol, based on:
 
@@ -21,8 +21,8 @@ with `gomobile bind` for Android and iOS.
 - Client streams now carry a per-stream target address, so one tunnel can talk
   to multiple TCP targets.
 - Client can expose a local SOCKS5 proxy for apps that expect a standard proxy.
-- A separate `slipstream-go/mobile` package wraps the core API in
-  gomobile-friendly types.
+- A separate `github.com/TheCitadelX/libslipstream-go/mobile` package wraps the
+  core API in gomobile-friendly types.
 
 The client runtime now follows a hybrid strategy: keep Rust wire compatibility as
 the source of truth, while borrowing practical transport ideas from
@@ -33,17 +33,31 @@ queries.
 
 ## Mobile API
 
-Use the `slipstream-go/mobile` package as the binding surface for Android and
-iOS. It exposes string/byte/int config structs plus simple `Start`, `Stop`,
-`DialTCP`, and `StartSOCKS5` methods.
+Use the `github.com/TheCitadelX/libslipstream-go/mobile` package as the binding
+surface for Android and iOS. It exposes string/byte/int config structs plus
+simple `Start`, `Stop`, `DialTCP`, and `StartSOCKS5` methods.
 
 ```go
+import "github.com/TheCitadelX/libslipstream-go/mobile"
+
 client, err := mobile.NewClient(mobile.ClientConfig{
 	ResolversCSV:      "127.0.0.1:5353",
 	Domain:            "test.com",
 	AllowInsecure:     true,
 	InitialPacketSize: 1200,
 })
+```
+
+Android bindings:
+
+```sh
+./scripts/build-android.sh
+```
+
+iOS bindings must be built on macOS with Xcode:
+
+```sh
+./scripts/build-ios.sh
 ```
 
 ## Verify
@@ -55,4 +69,7 @@ go test ./...
 ## Docs
 
 - [Mobile integration](docs/MOBILE.md)
+- [Android smoke test](docs/ANDROID.md)
+- [iOS smoke test](docs/IOS.md)
+- [TLS and certificate pinning](docs/TLS.md)
 - [Roadmap](docs/ROADMAP.md)
