@@ -75,6 +75,8 @@ if err := client.Start(); err != nil {
 
 Use `DialTCP(target)` to open a remote TCP stream over the tunnel. Use
 `StartSOCKS5(listenAddr)` if you need a local proxy for existing apps.
+Use `Events()` to poll app-friendly runtime events without wiring Go callbacks
+through gomobile.
 
 Android apps can use the generated `mobile.ClientConfig` and `mobile.Client`
 classes from the AAR. A typical integration starts the tunnel and then exposes a
@@ -87,11 +89,16 @@ config.setDomain("example.com");
 config.setAllowInsecure(false);
 config.setCertFingerprint("sha256-hex-fingerprint");
 config.setInitialPacketSize(1200);
+config.setEventQueueSize(128);
 
 Client client = Mobile.newClient(config);
 client.start();
 String proxy = client.startSOCKS5("127.0.0.1:0");
+Event event = client.events().next(1000);
 ```
+
+`EventQueue.next(timeoutMs)` returns immediately for `0`, waits forever for a
+negative timeout, or waits up to the given timeout in milliseconds.
 
 ## Server
 

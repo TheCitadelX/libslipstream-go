@@ -17,6 +17,7 @@ type ClientConfig struct {
 	AllowInsecure     bool
 	InitialPacketSize int
 	SOCKS5ListenAddr  string
+	EventQueueSize    int
 }
 
 type ServerConfig struct {
@@ -28,6 +29,7 @@ type ServerConfig struct {
 	KeyPEM           []byte
 	ResponseWaitMs   int
 	PacketQueueSize  int
+	EventQueueSize   int
 }
 
 func splitCSV(value string) []string {

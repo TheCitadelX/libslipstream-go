@@ -20,6 +20,8 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 - [x] `gomobile bind` build scripts for iOS.
 - [x] Local Android AAR compilation with generated Java API inspection.
 - [x] Gradle-based Android smoke app for AVD testing.
+- [x] Minimal Android integration example.
+- [x] Runtime event queue suitable for mobile apps.
 - [x] Android smoke test instructions.
 - [x] iOS smoke test instructions.
 - [x] Production TLS and certificate pinning documentation.
@@ -27,9 +29,7 @@ This roadmap tracks the Go port of Slipstream and the mobile binding work.
 
 ## Next
 
-- [ ] Add a minimal Android integration example.
 - [ ] Add a minimal iOS integration example.
-- [ ] Add runtime logging hooks suitable for mobile apps.
 
 ## Later
 

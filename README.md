@@ -23,6 +23,8 @@ with `gomobile bind` for Android and iOS.
 - Client can expose a local SOCKS5 proxy for apps that expect a standard proxy.
 - A separate `github.com/TheCitadelX/libslipstream-go/mobile` package wraps the
   core API in gomobile-friendly types.
+- Mobile clients and servers expose a small event queue for app-friendly
+  runtime status and error reporting.
 
 The client runtime now follows a hybrid strategy: keep Rust wire compatibility as
 the source of truth, while borrowing practical transport ideas from

@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.thecitadelx.slipstream.mobile.Client;
 import com.thecitadelx.slipstream.mobile.ClientConfig;
+import com.thecitadelx.slipstream.mobile.Event;
 import com.thecitadelx.slipstream.mobile.Mobile;
 
 public final class MainActivity extends Activity {
@@ -27,10 +28,13 @@ public final class MainActivity extends Activity {
             config.setDomain("example.com");
             config.setAllowInsecure(true);
             config.setInitialPacketSize(1200);
+            config.setEventQueueSize(8);
 
             Client client = Mobile.newClient(config);
+            Event event = client.events().next(1000);
             boolean connected = client.connected();
-            String message = "SLIPSTREAM_SMOKE_OK connected=" + connected;
+            String eventMessage = event == null ? "no-event" : event.getLevel() + ":" + event.getMessage();
+            String message = "SLIPSTREAM_SMOKE_OK connected=" + connected + " event=" + eventMessage;
             Log.i(TAG, message);
             text.setText(message);
         } catch (Exception e) {

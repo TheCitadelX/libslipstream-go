@@ -26,6 +26,8 @@ try {
     Write-Output "Java API:"
     javap -classpath classes.jar `
         com.thecitadelx.slipstream.mobile.Mobile `
+        com.thecitadelx.slipstream.mobile.Event `
+        com.thecitadelx.slipstream.mobile.EventQueue `
         com.thecitadelx.slipstream.mobile.ClientConfig `
         com.thecitadelx.slipstream.mobile.Client `
         com.thecitadelx.slipstream.mobile.ServerConfig `

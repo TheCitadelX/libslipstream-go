@@ -40,7 +40,7 @@ Build and run the smoke APK on the default local AVD:
 The runtime smoke test passes when logcat contains:
 
 ```text
-SLIPSTREAM_SMOKE_OK connected=false
+SLIPSTREAM_SMOKE_OK connected=false event=info:client created
 ```
 
 ## Import
@@ -75,3 +75,19 @@ String proxyAddress = client.startSOCKS5("127.0.0.1:0");
 
 The smoke test passes when the app receives a non-empty `proxyAddress` and a
 TCP client can connect through that SOCKS5 endpoint.
+
+## Runtime Events
+
+The mobile API exposes a non-blocking event queue for app logs and status
+updates:
+
+```java
+config.setEventQueueSize(128);
+Client client = Mobile.newClient(config);
+Event event = client.events().next(1000);
+if (event != null) {
+    Log.i("Slipstream", event.getLevel() + " " + event.getMessage());
+}
+```
+
+Use a background thread or coroutine when waiting with a non-zero timeout.
