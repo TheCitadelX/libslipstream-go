@@ -40,7 +40,7 @@ simple `Start`, `Stop`, `DialTCP`, and `StartSOCKS5` methods.
 ```go
 import "github.com/TheCitadelX/libslipstream-go/mobile"
 
-client, err := mobile.NewClient(mobile.ClientConfig{
+client, err := mobile.NewClient(&mobile.ClientConfig{
 	ResolversCSV:      "127.0.0.1:5353",
 	Domain:            "test.com",
 	AllowInsecure:     true,

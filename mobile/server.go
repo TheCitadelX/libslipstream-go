@@ -1,12 +1,19 @@
 package mobile
 
-import core "github.com/TheCitadelX/libslipstream-go"
+import (
+	"fmt"
+
+	core "github.com/TheCitadelX/libslipstream-go"
+)
 
 type Server struct {
 	inner *core.Server
 }
 
-func NewServer(config ServerConfig) (*Server, error) {
+func NewServer(config *ServerConfig) (*Server, error) {
+	if config == nil {
+		return nil, fmt.Errorf("server config is required")
+	}
 	inner, err := core.NewServer(config.toCore())
 	if err != nil {
 		return nil, err

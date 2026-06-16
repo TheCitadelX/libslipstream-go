@@ -12,7 +12,10 @@ type Client struct {
 	inner *core.Client
 }
 
-func NewClient(config ClientConfig) (*Client, error) {
+func NewClient(config *ClientConfig) (*Client, error) {
+	if config == nil {
+		return nil, fmt.Errorf("client config is required")
+	}
 	inner, err := core.NewClient(config.toCore())
 	if err != nil {
 		return nil, err

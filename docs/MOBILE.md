@@ -12,8 +12,9 @@ go install golang.org/x/mobile/cmd/gomobile@latest
 gomobile init
 ```
 
-Android builds require a JDK plus Android SDK/NDK. iOS builds must run on macOS
-with Xcode installed.
+Android builds require a JDK plus Android SDK/NDK. On Windows, the PowerShell
+script auto-detects `E:\PROG\AndroidSDK` when `ANDROID_HOME` is not set. iOS
+builds must run on macOS with Xcode installed.
 
 ## Build Android
 
@@ -29,11 +30,18 @@ POSIX shell:
 ./scripts/build-android.sh
 ```
 
-The default output is `build/android/libslipstream.aar`. Override the defaults
-with script parameters or environment variables:
+The default output is `build/android/libslipstream.aar` and the default Android
+API level is 21. Override the defaults with script parameters or environment
+variables:
 
 ```sh
 OUTPUT=build/android/slipstream-arm64.aar TARGET=android/arm64 ./scripts/build-android.sh
+```
+
+For an x86_64 AVD build on Windows:
+
+```powershell
+.\scripts\build-android.ps1 -Target android/amd64 -Output build/android/libslipstream-amd64.aar
 ```
 
 ## Build iOS
@@ -51,7 +59,7 @@ The default output is `build/ios/Libslipstream.framework`.
 ```go
 import "github.com/TheCitadelX/libslipstream-go/mobile"
 
-client, err := mobile.NewClient(mobile.ClientConfig{
+client, err := mobile.NewClient(&mobile.ClientConfig{
 	ResolversCSV:      "127.0.0.1:5353",
 	Domain:            "example.com",
 	AllowInsecure:     true,
@@ -90,7 +98,7 @@ String proxy = client.startSOCKS5("127.0.0.1:0");
 ```go
 import "github.com/TheCitadelX/libslipstream-go/mobile"
 
-server, err := mobile.NewServer(mobile.ServerConfig{
+server, err := mobile.NewServer(&mobile.ServerConfig{
 	DNSListenAddress: "0.0.0.0:5353",
 	Domain:           "example.com",
 	CertPEM:          certPEM,

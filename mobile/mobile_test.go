@@ -107,7 +107,7 @@ func TestMobileSOCKS5ProxyEcho(t *testing.T) {
 func startMobileTunnel(t *testing.T) *Client {
 	t.Helper()
 	certPEM, keyPEM := generateMobileTestCertificate(t)
-	server, err := NewServer(ServerConfig{
+	server, err := NewServer(&ServerConfig{
 		DNSListenAddress: "127.0.0.1:0",
 		Domain:           "test.com",
 		CertPEM:          certPEM,
@@ -127,7 +127,7 @@ func startMobileTunnel(t *testing.T) *Client {
 	if dnsAddr == "" {
 		t.Fatalf("empty server DNS address")
 	}
-	client, err := NewClient(ClientConfig{
+	client, err := NewClient(&ClientConfig{
 		ResolversCSV:      dnsAddr,
 		Domain:            "test.com",
 		AllowInsecure:     true,

@@ -19,7 +19,7 @@ development.
 Set `CertFingerprint` to the server certificate SHA-256 fingerprint in hex.
 
 ```go
-client, err := mobile.NewClient(mobile.ClientConfig{
+client, err := mobile.NewClient(&mobile.ClientConfig{
 	ResolversCSV:      "1.1.1.1:53,8.8.8.8:53",
 	Domain:            "example.com",
 	CertFingerprint:   "sha256-hex-fingerprint",
@@ -32,7 +32,7 @@ client, err := mobile.NewClient(mobile.ClientConfig{
 Set `PinnedCertPEM` when the app ships with the exact server certificate:
 
 ```go
-client, err := mobile.NewClient(mobile.ClientConfig{
+client, err := mobile.NewClient(&mobile.ClientConfig{
 	ResolversCSV:      "1.1.1.1:53,8.8.8.8:53",
 	Domain:            "example.com",
 	PinnedCertPEM:     certPEM,
@@ -45,7 +45,7 @@ client, err := mobile.NewClient(mobile.ClientConfig{
 Servers require `CertPEM` and `KeyPEM`:
 
 ```go
-server, err := mobile.NewServer(mobile.ServerConfig{
+server, err := mobile.NewServer(&mobile.ServerConfig{
 	DNSListenAddress: "0.0.0.0:5353",
 	Domain:           "example.com",
 	CertPEM:          certPEM,
